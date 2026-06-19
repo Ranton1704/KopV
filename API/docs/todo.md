@@ -27,7 +27,7 @@
 - **ModePaiement**: id, libelle
 - **Paiement**: id, *reservation*, dateAnnulation, fraisAnnulation, motif
 
-## B. Desktop
+## B. Fonctionnalités
 ### 1. Page de liste des réservations
 #### a. Liste des trajets
 - **Route**: GET /trajet/list
@@ -187,3 +187,12 @@
   - insert into ReservationFille
   - insert into ReservationStatut (statut = `"confirmée"`)
   - insert into Paiement
+
+### 3. Page de détail d’une réservation
+#### a. QR code d’un billet
+- **Route**: GET /reservation/*{idMere}*/*{idFille}*/qrcode
+- **Output**: image
+
+#### b. PDF d’un billet
+- **Route**: GET /reservation/*{idMere}*/*{idFille}*/pdf
+- **Output**: pdf
