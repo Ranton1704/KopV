@@ -24,4 +24,8 @@ $routes->group('Voyage', function($routes) {
 
     // Étape 5 : Soumission finale des passagers avant envoi vers Spring Boot / Paiement
     $routes->post('submit-passengers', 'VoyageController::submitPassengers');
+
+    // API endpoints AJAX pour le verrouillage des sièges
+    $routes->post('lock-seat', 'VoyageController::lockSeat');
+    $routes->post('unlock-seat', 'VoyageController::unlockSeat');
 });

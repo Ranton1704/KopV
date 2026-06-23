@@ -1,0 +1,209 @@
+Table role:
+    - id
+    - libelle (admin, guichet, chauffeur, RH, RE)
+
+Table utilisateurs:
+    - id
+    - nom
+    - prenom
+    - id_role
+    - email UNIQUE
+    - mot_de_passe
+
+Table categorie_vehicule:
+    - id
+    - libelle (VIP, Premium, Standard)
+
+Table vehicules:
+    - id
+    - immatriculation
+    - modele
+    - id_categorie
+    - nombre_places
+
+Table gares:
+    - id
+    - nom
+    - ville
+    - position GEOMETRY(Point, 4326) // Mandray coordonnée en longitude/latitude pour la carte SIG
+
+Table trajets:
+    - id
+    - id_gare_depart
+    - id_gare_arrivee
+    - distance_km NUMERIC(10,2)
+
+Table point_ramassage:
+    - id
+    - nom
+    - position GEOMETRY(Point, 4326)
+
+Table trajet_etapes:
+    - id
+    - id_trajet
+    - id_point_ramassage
+    - ordre // ordre d'arrêt (1,2,...)
+    - duree_depuis_depart_minute // Temps requis pour atteindre cette étape
+
+Table tarif_voyage:
+    - id
+    - id_categorie // Categorie de vehicule
+    - prix
+    - date_modification
+
+Table voyages:
+    - id
+    - id_trajet
+    - id_vehicule
+    - id_chauffeur
+    - date_heure_depart TIMESTAMP
+    - duree_estimee_minutes
+    - tarif NUMERIC(10,2)
+
+Table statut_voyage:
+    - id
+    - libelle (en cours, plannifié, terminé, en panne)
+
+Table voyage_statut: (Table associative)
+    - id
+    - id_voyage
+    - id_statut
+    - date_modification
+
+Table places:
+    - id
+    - id_vehicule
+    - numero
+
+Table client:
+    - id
+    - nom
+    - telephone
+
+Table statut_paiement:
+    - id
+    - libelle (non-payé, partiellement payé, payé)
+
+Table reservations_mere:
+    - id
+    - libelle
+    - id_voyage
+    - id_client
+    - date_reservation
+    - id_statut_paiement
+
+Table reservations_fille:
+    - id
+    - id_reservation_mere
+    - id_place
+
+Table statut_reservation:
+    - id
+    - libelle (confirmée, annulée)
+
+Table reservation_statut: (Table associative)
+    - id
+    - id_reservation
+    - id_statut
+    - date_modification
+
+Table mode_paiement:
+    - id
+    - libelle (en espece, carte, mobile money, ...)
+
+Table paiements:
+    - id
+    - id_reservation
+    - montant
+    - id_mode_paiement
+    - date_paiement
+    - reference_transaction // Dans le cas où payer par carte ou par mobile money sinon NULL
+
+Table annulations:
+    - id
+    - id_reservation
+    - date_annulation
+    - frais_annulation
+    - motif
+
+Table type_contrat:
+    - id
+    - libelle (CDI, CDD, PRESTATAIRE)
+
+Table contrats_employes:
+    - id
+    - id_employe (reference à utilisateur(id))
+    - date_embauche
+    - type_contrat
+
+Table salaires:
+    - id
+    - id_employe
+    - salaire
+    - date_modification
+
+Table type_conges:
+    - id
+    - libelle (maladie, vacance, formation)
+    - quota
+
+Table demande_conges:
+    - id
+    - id_employe
+    - date_demande
+    - id_type_conges
+    - date_debut
+    - date_fin
+
+Table statut_demande:
+    - id
+    - libelle (approuvé, en attente, refusé)
+
+Table demande_statut: (Table associative)
+    - id
+    - id_demande
+    - id_statut
+    - date_modification
+
+Table pannes:
+    - id
+    - id_voyage
+    - id_chauffeur // Qui est-ce qui a signalé la panne ?
+    - date_signalement
+    - description // Vaky pneu, Surchauffe moteur
+    - position_gps GEOMETRY(Point, 4326)
+
+Table statut_reparation:
+    - id
+    - libelle (en attente, en cours de depannage, resolu)
+
+Table reparation:
+    - id
+    - id_panne
+    - id_statut_reparation
+    - date_modification
+
+Table indisponibilite_vehicule:
+    - id
+    - id_vehicule
+    - motif (en panne, visite technique, revision)
+    - date_debut
+    - date_fin_estimee
+
+Table affectation_gares:
+    - id
+    - id_employe
+    - id_gare
+    - id_rh_auteur
+    - date_debut
+    - date_fin
+
+Table statut_affectation:
+    - id
+    - libelle (actif, termine, mutation prévue)
+
+Table affectation_statut: (Table associative)
+    - id
+    - id_affectation
+    - id_statut
+    - date_affectation

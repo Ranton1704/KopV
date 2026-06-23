@@ -1,111 +1,201 @@
-<div class="container mt-5">
-    <div class="row">
-        
-        <div class="col-md-7 mb-4">
-            <div class="card shadow">
-                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Sélectionnez vos places sur le plan</h5>
-                    <div class="badge bg-danger" id="countdownTimer">Temps restant : 10:00</div>
-                </div>
-                <div class="card-body bg-light text-center py-4">
-                    
-                    <div class="d-flex justify-content-center gap-3 mb-4 small">
-                        <div><span class="d-inline-block bg-white border rounded" style="width:20px;height:20px;vertical-align:middle;"></span> Libre</div>
-                        <div><span class="d-inline-block bg-success rounded" style="width:20px;height:20px;vertical-align:middle;"></span> Choisi</div>
-                        <div><span class="d-inline-block bg-secondary rounded" style="width:20px;height:20px;vertical-align:middle;"></span> Occupé</div>
-                    </div>
+<?= $this->extend('layout') ?>
+<?= $this->section('content') ?>
+<div class="kopv-seat-page">
+    <!-- Progress Steps -->
+    <div class="kopv-progress">
+        <div class="kopv-progress-step completed">
+            <div class="kopv-progress-number">1</div>
+            <div class="kopv-progress-label">Recherche</div>
+        </div>
+        <div class="kopv-progress-step completed">
+            <div class="kopv-progress-number">2</div>
+            <div class="kopv-progress-label">Résultats</div>
+        </div>
+        <div class="kopv-progress-step active">
+            <div class="kopv-progress-number">3</div>
+            <div class="kopv-progress-label">Sièges</div>
+        </div>
+        <div class="kopv-progress-step">
+            <div class="kopv-progress-number">4</div>
+            <div class="kopv-progress-label">Passagers</div>
+        </div>
+        <div class="kopv-progress-step">
+            <div class="kopv-progress-number">5</div>
+            <div class="kopv-progress-label">Paiement</div>
+        </div>
+    </div>
 
-                    <div class="bus-container mx-auto p-3 bg-white border rounded shadow-sm" style="max-width: 280px; border-radius: 20px !important;">
-                        <div class="text-muted small mb-3 border-bottom pb-2">📟 Tableau de bord / Chauffeur</div>
-                        
-                        <div class="d-flex flex-column gap-3" id="seatGrid">
-                            <div class="d-flex justify-content-between">
-                                <button class="btn btn-sm btn-outline-secondary seat text-xs" data-seat-id="1" style="width:45px;height:45px;">1</button>
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="2" style="width:45px;height:45px;">2</button>
-                                <div style="width:45px;"></div> <button class="btn btn-sm btn-secondary text-white seat locked" disabled style="width:45px;height:45px;">3</button>
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="4" style="width:45px;height:45px;">4</button>
+    <div class="kopv-seat-header">
+        <div class="kopv-seat-eyebrow">Sélection des places</div>
+        <h1 class="kopv-seat-title">
+            Choisissez vos <em class="kopv-seat-title-em">sièges</em>
+        </h1>
+        <p class="kopv-seat-subtitle">
+            Sélectionnez <?= esc($passengers ?? 1) ?> place(s) pour continuer votre réservation
+        </p>
+    </div>
+
+    <div class="kopv-seat-layout">
+        <!-- 3D Vehicle View -->
+        <div class="kopv-vehicle-3d" data-max-seats="<?= esc($passengers ?? 1) ?>" data-trip-id="<?= esc($trip_id ?? '') ?>">
+            <div class="kopv-vehicle-container">
+                <!-- Vehicle Body -->
+                <div class="kopv-vehicle-body-3d">
+                    <!-- Driver Area with 2 seats -->
+                    <div class="kopv-driver-area-3d">
+                        <div class="kopv-driver-seats-row">
+                            <div class="kopv-driver-seat">
+                                <i class="bi bi-person-fill kopv-driver-icon"></i>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="5" style="width:45px;height:45px;">5</button>
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="6" style="width:45px;height:45px;">6</button>
-                                <div style="width:45px;"></div>
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="7" style="width:45px;height:45px;">7</button>
-                                <button class="btn btn-sm btn-outline-secondary seat" data-seat-id="8" style="width:45px;height:45px;">8</button>
-                            </div>
+                            <div class="kopv-driver-label">Chauffeur</div>
+                        </div>
+                        <div class="kopv-driver-seats-row">
+                            <button class="kopv-seat-3d kopv-driver-passenger available" data-seat-id="0" data-seat-number="0">
+                                <div class="kopv-seat-back"></div>
+                                <div class="kopv-seat-cushion">
+                                    <span class="kopv-seat-number">0</span>
+                                </div>
+                                <div class="kopv-seat-base"></div>
+                            </button>
+                            <div class="kopv-driver-label">Passager</div>
+                        </div>
+                        <div class="kopv-driver-seats-row">
+                            <button class="kopv-seat-3d kopv-driver-assistant occupied" data-seat-id="-1" data-seat-number="-1" disabled>
+                                <div class="kopv-seat-back"></div>
+                                <div class="kopv-seat-cushion">
+                                    <span class="kopv-seat-number">2°</span>
+                                </div>
+                                <div class="kopv-seat-base"></div>
+                            </button>
+                            <div class="kopv-driver-label">2° Chauffeur</div>
                         </div>
                     </div>
 
+                    <!-- Passenger Seats -->
+                    <div class="kopv-passenger-section">
+                        <?php if(isset($places) && is_array($places)): ?>
+                            <?php 
+                            $placesPerRow = 4;
+                            $totalPlaces = count($places);
+                            for($i = 0; $i < $totalPlaces; $i += $placesPerRow): 
+                                $rowPlaces = array_slice($places, $i, $placesPerRow);
+                            ?>
+                                <div class="kopv-seat-row-3d">
+                                    <?php foreach($rowPlaces as $index => $place): 
+                                        $isLocked = ($place['statut'] ?? 'libre') === 'occupe';
+                                        $seatClass = $isLocked ? 'occupied' : 'available';
+                                        $isAisle = $index === 1;
+                                    ?>
+                                        <button class="kopv-seat-3d <?= $seatClass ?>" 
+                                                data-seat-id="<?= esc($place['id']) ?>" 
+                                                data-seat-number="<?= esc($place['numero']) ?>"
+                                                <?= $isLocked ? 'disabled' : '' ?>>
+                                            <div class="kopv-seat-back"></div>
+                                            <div class="kopv-seat-cushion">
+                                                <span class="kopv-seat-number"><?= esc($place['numero']) ?></span>
+                                            </div>
+                                            <div class="kopv-seat-base"></div>
+                                        </button>
+                                        <?php if($isAisle): ?>
+                                            <div class="kopv-aisle"></div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php endfor; ?>
+                        <?php else: ?>
+                            <!-- Fallback avec des places statiques -->
+                            <?php for($row = 1; $row <= 5; $row++): ?>
+                                <div class="kopv-seat-row-3d">
+                                    <?php for($col = 1; $col <= 4; $col++): 
+                                        $seatNum = ($row - 1) * 4 + $col;
+                                        $isOccupied = in_array($seatNum, [3, 19]);
+                                        $seatClass = $isOccupied ? 'occupied' : 'available';
+                                    ?>
+                                        <button class="kopv-seat-3d <?= $seatClass ?>" 
+                                                data-seat-id="<?= $seatNum ?>" 
+                                                data-seat-number="<?= $seatNum ?>"
+                                                <?= $isOccupied ? 'disabled' : '' ?>>
+                                            <div class="kopv-seat-back"></div>
+                                            <div class="kopv-seat-cushion">
+                                                <span class="kopv-seat-number"><?= $seatNum ?></span>
+                                            </div>
+                                            <div class="kopv-seat-base"></div>
+                                        </button>
+                                        <?php if($col === 2): ?>
+                                            <div class="kopv-aisle"></div>
+                                        <?php endif; ?>
+                                    <?php endfor; ?>
+                                </div>
+                            <?php endfor; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Vehicle Info -->
+                <div class="kopv-vehicle-info">
+                    <div class="kopv-vehicle-name">
+                        <i class="bi bi-bus"></i>
+                        SPRINTER #02
+                    </div>
+                    <div class="kopv-vehicle-timer">
+                        <i class="bi bi-clock"></i>
+                        <span id="countdownTimer">10:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="kopv-seat-legend">
+                <div class="kopv-legend-item">
+                    <div class="kopv-legend-seat available"></div>
+                    <span>Disponible</span>
+                </div>
+                <div class="kopv-legend-item">
+                    <div class="kopv-legend-seat selected"></div>
+                    <span>Sélectionné</span>
+                </div>
+                <div class="kopv-legend-item">
+                    <div class="kopv-legend-seat occupied"></div>
+                    <span>Occupé</span>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-5">
-            <div class="card shadow border-primary">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Votre Choix</h5>
-                    <hr>
-                    <p>Places requises : <strong id="reqPassengers"><?= esc($_GET['passengers'] ?? 1) ?></strong></p>
-                    <p>Places sélectionnées : <span id="selectedSeatsList" class="badge bg-primary fs-6">-</span></p>
-                    
-                    <form action="<?= base_url('booking/passenger-info') ?>" method="POST" id="seatConfirmationForm">
-                        <input type="hidden" name="trip_id" value="<?= esc($_GET['trip_id'] ?? '') ?>">
-                        <input type="hidden" name="chosen_seats" id="inputChosenSeats" value="">
-                        
-                        <button type="submit" id="btnSubmitSeats" class="btn btn-success btn-lg w-100 mt-4" disabled>
-                            Confirmer les places
-                        </button>
-                    </form>
+        <!-- Selection Summary -->
+        <div class="kopv-card kopv-seat-summary">
+            <div class="kopv-card-accent"></div>
+            <h3 class="kopv-seat-summary-title">Votre sélection</h3>
+            
+            <div class="kopv-seat-summary-info">
+                <div class="kopv-seat-summary-row">
+                    <span>Places requises</span>
+                    <span class="kopv-seat-summary-value" id="reqPassengers">
+                        <?= esc($passengers ?? 1) ?>
+                    </span>
+                </div>
+                <div class="kopv-seat-summary-row">
+                    <span>Places sélectionnées</span>
+                    <span class="kopv-badge" id="selectedSeatsList">-</span>
                 </div>
             </div>
-        </div>
 
+            <form action="<?= base_url('Voyage/passenger-info') ?>" method="POST" id="seatConfirmationForm">
+                <input type="hidden" name="trip_id" value="<?= esc($trip_id ?? '') ?>">
+                <input type="hidden" name="chosen_seats" id="inputChosenSeats" value="">
+                
+                <button type="submit" id="btnSubmitSeats" class="kopv-btn kopv-btn-primary kopv-btn-full" disabled>
+                    <i class="bi bi-check-circle"></i>
+                    Confirmer les places
+                </button>
+            </form>
+
+            <div class="kopv-seat-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                <span>Vous avez 10 minutes pour compléter votre réservation. Les sièges sélectionnés seront automatiquement libérés après ce délai.</span>
+            </div>
+        </div>
     </div>
 </div>
 
-<script>
-const maxAllowed = parseInt(document.getElementById('reqPassengers').innerText);
-let selectedSeats = [];
-
-document.querySelectorAll('.seat:not(.locked)').forEach(seat => {
-    seat.addEventListener('click', function() {
-        const seatId = this.getAttribute('data-seat-id');
-
-        if (this.classList.contains('btn-success')) {
-            // Désélectionner
-            this.classList.remove('btn-success');
-            this.classList.add('btn-outline-secondary');
-            selectedSeats = selectedSeats.filter(id => id !== seatId);
-        } else {
-            // Sélectionner (Vérifier la limite)
-            if (selectedSeats.length >= maxAllowed) {
-                alert(`Vous avez déjà sélectionné vos ${maxAllowed} place(s).`);
-                return;
-            }
-            this.classList.remove('btn-outline-secondary');
-            this.classList.add('btn-success');
-            selectedSeats.push(seatId);
-        }
-
-        // Mettre à jour l'affichage et le formulaire
-        document.getElementById('selectedSeatsList').innerText = selectedSeats.length > 0 ? selectedSeats.join(', ') : '-';
-        document.getElementById('inputChosenSeats').value = selectedSeats.join(',');
-        document.getElementById('btnSubmitSeats').disabled = (selectedSeats.length !== maxAllowed);
-        
-        // C'EST ICI : Qu'on pourra ajouter le fetch() AJAX vers Spring Boot pour appeler l'API `lockSeat()` !
-    });
-});
-
-// Minuteur de 10 minutes pour libérer les places en session/DB
-let time = 600;
-setInterval(() => {
-    if(time > 0) {
-        time--;
-        let min = Math.floor(time / 60);
-        let sec = time % 60;
-        document.getElementById('countdownTimer').innerText = `Temps restant : ${min}:${sec < 10 ? '0':''}${sec}`;
-    } else {
-        alert("Le temps de réservation est écoulé ! Les sièges ont été libérés.");
-        window.location.reload();
-    }
-}, 1000);
-</script>
+<script src="<?= base_url('assets/js/seat-map.js') ?>"></script>
+<?= $this->endSection() ?>
