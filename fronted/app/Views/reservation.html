@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kop-V - Sélection des places</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --sidebar-bg: #022C22;
+            --primary-emerald: #065F46;
+            --accent-green: #059669;
+            --light-green-bg: #E6F4EA;
+            --brand-blue: #2563EB;
+        }
+
+        body { background-color: #F9FAFB; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; }
+        .sidebar .brand { font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar .nav-link { color: #D1FAE5; padding: 12px 20px; margin: 4px 0; border-left: 4px solid transparent; transition: all 0.2s; text-decoration: none; display: block; }
+        
+        /* CORRIGÉ : Remplacement de la bordure bleue par une bordure blanche */
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: var(--accent-green); color: white; border-left-color: white; }
+        
+        .main-content { margin-left: 260px; padding: 30px; }
+        .text-emerald { color: var(--primary-emerald); }
+        .btn-emerald { background-color: var(--accent-green); color: white; }
+        .btn-emerald:hover { background-color: var(--primary-emerald); color: white; }
+        
+        /* PLAN DU VEHICULE SPÉCIFIQUE (SPRINTER) */
+        .cabin-grid {
+            background-color: #E5E7EB;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 320px;
+            margin: 0 auto;
+            border: 3px solid #9CA3AF;
+        }
+        .driver-seat {
+            height: 40px;
+            width: 40px;
+            background-color: #4B5563;
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .seat-checkbox { display: none; }
+        .seat-label {
+            display: block;
+            width: 45px;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            background-color: #10B981; /* Vert libre */
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.1s;
+        }
+        .seat-checkbox:checked + .seat-label {
+            background-color: var(--brand-blue); /* Bleu sélectionné */
+            transform: scale(0.95);
+        }
+        .seat-checkbox:disabled + .seat-label {
+            background-color: #EF4444; /* Rouge occupé */
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .corridor { width: 45px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar d-flex flex-column p-0">
+        <div class="brand p-4 text-white fw-bold d-flex align-items-center">
+            <i class="fa-solid fa-van-shuttle me-2 text-white-50" style="font-size: 1.4rem;"></i>
+            <span>KOP-V</span>
+        </div>
+        <ul class="nav flex-column mt-3 flex-grow-1">
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-list-check me-2"></i> Liste Réservations</a></li>
+            <li class="nav-item"><a class="nav-link active" href="#"><i class="fa-solid fa-ticket me-2"></i> Nouvelle Réservation</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-bus me-2"></i> Suivi des Voyages</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="mb-4">
+            <h2 class="text-emerald fw-bold m-0"><i class="fa-solid fa-couch me-2"></i>Sélection des Sièges & Détails Client</h2>
+            <p class="text-muted">Axe : Antananarivo - Antsirabe | Véhicule : 1245 TAB | Tarif : <span id="prix_unitaire">25000</span> Ar</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <div class="card shadow-sm border-0 p-4">
+                    <h5 class="text-center fw-bold mb-3 text-secondary">Plan Intérieur du Véhicule</h5>
+                    
+                    <div class="cabin-grid">
+                        <div class="d-flex justify-content-between mb-4 pb-3 border-bottom border-secondary-subtle">
+                            <div class="driver-seat small fw-bold"><i class="fa-solid fa-id-card me-1"></i> Chauf.</div>
+                            <div class="d-flex gap-2">
+                                <div><input type="checkbox" id="s1" class="seat-checkbox" value="1"><label for="s1" class="seat-label">01</label></div>
+                                <div><input type="checkbox" id="s2" class="seat-checkbox" value="2"><label for="s2" class="seat-label">02</label></div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <div><input type="checkbox" id="s3" class="seat-checkbox" value="3" disabled><label for="s3" class="seat-label">03</label></div>
+                                    <div><input type="checkbox" id="s4" class="seat-checkbox" value="4" disabled><label for="s4" class="seat-label">04</label></div>
+                                </div>
+                                <div class="corridor"></div>
+                                <div><input type="checkbox" id="s5" class="seat-checkbox" value="5"><label for="s5" class="seat-label">05</label></div>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex gap-2">
+                                    <div><input type="checkbox" id="s6" class="seat-checkbox" value="6"><label for="s6" class="seat-label">06</label></div>
+                                    <div><input type="checkbox" id="s7" class="seat-checkbox" value="7"><label for="s7" class="seat-label">07</label></div>
+                                </div>
+                                <div class="corridor"></div>
+                                <div><input type="checkbox" id="s8" class="seat-checkbox" value="8"><label for="s8" class="seat-label">08</label></div>
+                            </div>
+                            <div class="d-flex justify-content-between pt-2">
+                                <div><input type="checkbox" id="s16" class="seat-checkbox" value="16"><label for="s16" class="seat-label">16</label></div>
+                                <div><input type="checkbox" id="s17" class="seat-checkbox" value="17"><label for="s17" class="seat-label">17</label></div>
+                                <div><input type="checkbox" id="s18" class="seat-checkbox" value="18"><label for="s18" class="seat-label">18</label></div>
+                                <div><input type="checkbox" id="s19" class="seat-checkbox" value="19"><label for="s19" class="seat-label">19</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center gap-3 mt-4 small fw-semibold">
+                        <div><span class="badge bg-success me-1">&nbsp;&nbsp;</span> Libre</div>
+                        <div><span class="badge bg-danger me-1">&nbsp;&nbsp;</span> Occupé</div>
+                        <div><span class="badge bg-primary me-1">&nbsp;&nbsp;</span> Sélectionné</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 p-4 mb-4">
+                    <h5 class="fw-bold text-emerald mb-4"><i class="fa-solid fa-user-pen me-2"></i>Informations Clientèle</h5>
+                    
+                    <form id="form_reservation" onsubmit="event.preventDefault(); alert('Données prêtes pour Validation !');">
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Nom du voyageur principal</label>
+                                <input type="text" class="form-control" placeholder="Ex: Jean Luc" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-secondary">Numéro de Téléphone</label>
+                                <input type="tel" class="form-control" placeholder="Ex: 034 11 222 33" required>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-secondary mb-3">Récapitulatif Calculé</h5>
+                        <div class="p-3 bg-light rounded mb-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Sièges choisis :</span>
+                                <span id="display_seats" class="fw-bold text-dark">Aucun</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Nombre de places :</span>
+                                <span id="display_count" class="fw-bold text-dark">0</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold text-dark m-0">Montant Total :</span>
+                                <h3 id="display_total" class="fw-bold text-primary m-0">0 Ar</h3>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-emerald btn-lg"><i class="fa-solid fa-floppy-disk me-2"></i>Valider la réservation</button>
+                            <a href="#" class="btn btn-light">Annuler et retourner au catalogue</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.seat-checkbox');
+        const prixUnitaire = parseInt(document.getElementById('prix_unitaire').innerText);
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                let selectedSeats = [];
+                checkboxes.forEach(c => { if(c.checked) selectedSeats.push(c.value); });
+                
+                document.getElementById('display_seats').innerText = selectedSeats.length > 0 ? selectedSeats.join(', ') : 'Aucun';
+                document.getElementById('display_count').innerText = selectedSeats.length;
+                document.getElementById('display_total').innerText = (selectedSeats.length * prixUnitaire).toLocaleString('fr-FR') + ' Ar';
+            });
+        });
+    </script>
+</body>
+</html>

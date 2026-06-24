@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kop-V - Encaissement Facture</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --sidebar-bg: #022C22;
+            --primary-emerald: #065F46;
+            --accent-green: #059669;
+            --light-green-bg: #E6F4EA;
+            --action-blue: #2563EB;
+        }
+        body { background-color: #F9FAFB; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; }
+        .sidebar .brand { font-size: 1.25rem; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar .nav-link { color: #D1FAE5; padding: 12px 20px; margin: 4px 0; border-left: 4px solid transparent; text-decoration: none; display: block; }
+        .sidebar .nav-link.active { background-color: var(--accent-green); color: white; border-left-color: white; }
+        .main-content { margin-left: 260px; padding: 30px; }
+        
+        .bg-emerald { background-color: var(--primary-emerald) !important; color: white; }
+        .text-emerald { color: var(--primary-emerald); }
+        .btn-emerald { background-color: var(--accent-green); color: white; }
+        .btn-emerald:hover { background-color: var(--primary-emerald); color: white; }
+        .btn-action-pay { background-color: var(--action-blue); color: white; }
+        .btn-action-pay:hover { background-color: #1D4ED8; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar d-flex flex-column p-0">
+        <div class="brand p-4 text-white fw-bold d-flex align-items-center">
+            <i class="fa-solid fa-van-shuttle me-2 text-white-50"></i><span>KOP-V</span>
+        </div>
+        <div class="px-4 py-2 text-white-50 small bg-black bg-opacity-25"><i class="fa-solid fa-user-tie me-2"></i>Guichet Principal</div>
+        <ul class="nav flex-column mt-3 flex-grow-1">
+            <li class="nav-item"><a class="nav-link active" href="#"><i class="fa-solid fa-list-check me-2"></i> Liste Réservations</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-ticket me-2"></i> Nouvelle Réservation</a></li>
+            <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-bus me-2"></i> Suivi des Voyages</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="mb-3">
+            <a href="#" class="text-decoration-none text-secondary small fw-semibold">
+                <i class="fa-solid fa-arrow-left me-1"></i> Retour au suivi des réservations
+            </a>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-emerald fw-bold m-0"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Facture #F-2058</h2>
+            <span class="badge bg-warning text-dark px-3 py-2 fw-bold"><i class="fa-solid fa-hourglass-half me-1"></i> Paiement Partiel</span>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white fw-bold text-secondary border-0 pt-3">
+                        <i class="fa-solid fa-circle-info me-2 text-emerald"></i>Détails du Voyage & Client
+                    </div>
+                    <div class="card-body row pt-2">
+                        <div class="col-sm-6 mb-3">
+                            <span class="text-muted small d-block">Passager</span>
+                            <strong class="text-dark">Rova Rakoto</strong>
+                            <span class="text-muted d-block small"><i class="fa-solid fa-phone me-1"></i>034 00 000 00</span>
+                        </div>
+                        <div class="col-sm-6 mb-3">
+                            <span class="text-muted small d-block">Axe / Trajet</span>
+                            <strong class="text-dark">Tana &rarr; Antsirabe</strong>
+                            <span class="text-muted d-block small"><i class="fa-regular fa-calendar me-1"></i>20/06/2026 à 08:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 overflow-hidden">
+                    <div class="card-header bg-white fw-bold text-secondary border-0 py-3">
+                        <i class="fa-solid fa-history me-2 text-emerald"></i>Historique des Versements
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0 small">
+                            <thead class="table-light text-secondary">
+                                <tr>
+                                    <th class="ps-4">Tranche</th>
+                                    <th>Date</th>
+                                    <th>Mode</th>
+                                    <th>Référence</th>
+                                    <th class="text-end pe-4">Montant</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ps-4 fw-bold">Tranche 1</td>
+                                    <td>15/06/2026</td>
+                                    <td><span class="badge bg-light text-dark">MVola</span></td>
+                                    <td class="text-muted">TX-99482</td>
+                                    <td class="fw-bold text-end pe-4">15 000 Ar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 bg-emerald text-white mb-4">
+                    <div class="card-body p-4 text-center">
+                        <span class="text-white-50 small uppercase fw-bold tracking-wider">Reste à percevoir</span>
+                        <h1 class="display-5 fw-bold my-2">10 000 Ar</h1>
+                        <div class="d-flex justify-content-between border-top border-white-subtle pt-3 mt-3 small text-white-50">
+                            <span>Total Billet : 25 000 Ar</span>
+                            <span>Déjà perçu : 15 000 Ar</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white fw-bold text-secondary border-0 pt-3">
+                        <i class="fa-solid fa-cash-register me-2 text-primary"></i>Enregistrer un versement
+                    </div>
+                    <div class="card-body">
+                        <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Tranche ajoutée avec succès ! (Simulation CodeIgniter 4)');">
+                            <div class="mb-3">
+                                <label for="id_mode_paiement" class="form-label small fw-bold text-secondary">Mode de règlement</label>
+                                <select class="form-select" id="id_mode_paiement" required>
+                                    <option value="1">Espèces (Caisse)</option>
+                                    <option value="2">MVola</option>
+                                    <option value="3">Orange Money</option>
+                                    <option value="4">Airtel Money</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="reference_transaction" class="form-label small fw-bold text-secondary">Référence / Réf. Transaction</label>
+                                <input type="text" class="form-control" id="reference_transaction" placeholder="Ex: Cash ou N° de reçu Mobile Money">
+                            </div>
+                            <div class="mb-4">
+                                <label for="montant_tranche" class="form-label small fw-bold text-secondary">Montant à encaisser (Ar)</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-lg fw-bold text-dark" id="montant_tranche" value="10000" min="1" required>
+                                    <span class="input-group-text fw-bold">Ar</span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-action-pay btn-lg w-100 fw-bold shadow-sm">
+                                <i class="fa-solid fa-check-double me-2"></i>Valider l'encaissement
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
