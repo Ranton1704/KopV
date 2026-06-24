@@ -7,3 +7,4 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/paiement', 'PaiementController::index');
+$routes->post('/paiement/add', 'PaiementController::insertPaiement');
