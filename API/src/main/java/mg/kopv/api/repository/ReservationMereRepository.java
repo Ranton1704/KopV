@@ -1,4 +1,4 @@
-package mg.kopv.repository;
+package mg.kopv.api.repository;
 
 import mg.kopv.api.entity.Client;
 import mg.kopv.api.entity.ReservationMere;

@@ -1,4 +1,4 @@
-package mg.kopv.repository;
+package mg.kopv.api.repository;
 
 import mg.kopv.api.entity.Place;
 import mg.kopv.api.entity.ReservationFille;
