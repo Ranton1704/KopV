@@ -20,8 +20,9 @@ public class Voyage {
     @JoinColumn(name = "id_vehicule", nullable = false)
     private Vehicule vehicule;
 
-    @Column(name = "id_chauffeur", nullable = false)
-    private Integer idChauffeur;
+    @ManyToOne
+    @JoinColumn(name = "id_chauffeur", nullable = false)
+    private Utilisateur chauffeur;
 
     @Column(name = "date_heure_depart", nullable = false)
     private LocalDateTime dateHeureDepart;
@@ -43,8 +44,8 @@ public class Voyage {
     public Vehicule getVehicule() { return vehicule; }
     public void setVehicule(Vehicule vehicule) { this.vehicule = vehicule; }
 
-    public Integer getIdChauffeur() { return idChauffeur; }
-    public void setIdChauffeur(Integer idChauffeur) { this.idChauffeur = idChauffeur; }
+    public Utilisateur getChauffeur() { return chauffeur; }
+    public void setChauffeur(Utilisateur chauffeur) { this.chauffeur = chauffeur; }
 
     public LocalDateTime getDateHeureDepart() { return dateHeureDepart; }
     public void setDateHeureDepart(LocalDateTime dateHeureDepart) { this.dateHeureDepart = dateHeureDepart; }

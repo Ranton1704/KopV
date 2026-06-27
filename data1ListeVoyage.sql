@@ -1,3 +1,21 @@
+CREATE TABLE role (
+    id      SERIAL PRIMARY KEY,
+    libelle VARCHAR(50) NOT NULL
+        CONSTRAINT chk_role_libelle
+        CHECK (libelle IN ('admin', 'guichet', 'chauffeur', 'RH', 'RE'))
+);
+
+
+CREATE TABLE utilisateurs (
+    id            SERIAL PRIMARY KEY,
+    nom           VARCHAR(100) NOT NULL,
+    prenom        VARCHAR(100) NOT NULL,
+    id_role       INTEGER      NOT NULL REFERENCES role(id),
+    email         VARCHAR(150) NOT NULL UNIQUE,
+    mot_de_passe  VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE categorie_vehicule (
     id   SERIAL PRIMARY KEY,
     libelle VARCHAR(50) NOT NULL
